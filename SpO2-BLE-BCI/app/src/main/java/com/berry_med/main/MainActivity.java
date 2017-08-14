@@ -170,7 +170,10 @@ public class MainActivity extends AppCompatActivity implements PackageParser.OnD
             super.handleMessage(msg);
             switch (msg.what) {
                 case Const.MESSAGE_OXIMETER_PARAMS:
-                    tvParamsBar.setText("SpO2: " + msg.arg1 + "   Pulse Rate:" + msg.arg2);
+                    PackageParser.OxiParams params = (PackageParser.OxiParams)msg.obj;
+                    tvParamsBar.setText("SPO2: " + params.getSpo2() +
+                                        " %      PR: " + params.getPulseRate() +
+                                        " bpm      PI: " + String.format("%.1f %%", params.getPi() / 10.0f));
                     break;
                 case Const.MESSAGE_OXIMETER_WAVE:
                     mSpO2WaveDraw.add(msg.arg1);
@@ -483,8 +486,7 @@ public class MainActivity extends AppCompatActivity implements PackageParser.OnD
 
     @Override
     public void onSpO2ParamsChanged() {
-        PackageParser.OxiParams params = mPackageParser.getOxiParams();
-        mHandler.obtainMessage(Const.MESSAGE_OXIMETER_PARAMS, params.getSpo2(), params.getPulseRate()).sendToTarget();
+        mHandler.obtainMessage(Const.MESSAGE_OXIMETER_PARAMS, mPackageParser.getOxiParams()).sendToTarget();
     }
 
     @Override

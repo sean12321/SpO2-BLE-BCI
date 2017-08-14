@@ -88,7 +88,7 @@ public class PackageParser {
     public void parse(int[] pkgData) {
 
         int spo2, pulseRate, pi, wave;
-        int pkgIndex = 0;
+        int pkgIndex;
         int checkSum = 0;
 
         if (parseVerInfo(pkgData)) {
