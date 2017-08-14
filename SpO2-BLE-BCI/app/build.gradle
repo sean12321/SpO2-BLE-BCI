@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '25.0.0'
+    defaultConfig {
+        applicationId "com.berry_med.spo2_ble_bci"
+        minSdkVersion 19
+        targetSdkVersion 22
+        versionCode 3
+        versionName '1.5'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable true
+        }
+    }
+    //Modify the output apk file name
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (variant.buildType.name.equals('debug')) {
+                def name = applicationId + "-" + versionName + '.apk'
+                output.outputFile = new File(outputFile.parent, name)
+            }
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:22.2.0'
+}
